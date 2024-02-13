@@ -61,7 +61,7 @@ def run_selenium(logpath):
         driver.get(url)
         xpath = '//*[@class="ui-mainview-block eventpath-wrapper"]'
         # Wait for the element to be rendered:
-        element = WebDriverWait(driver, 10).until(lambda x: x.find_elements(by=By.XPATH, value=xpath))
+        element = WebDriverWait(driver, 100).until(lambda x: x.find_elements(by=By.XPATH, value=xpath))
         name = element[0].get_property('attributes')[0]['name']
     return name
 
