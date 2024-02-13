@@ -9,7 +9,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 import requests
 import pandas as pd
-import plotly.express as px
 from bs4 import BeautifulSoup
 import difflib
 
