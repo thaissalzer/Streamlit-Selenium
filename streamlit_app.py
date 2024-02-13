@@ -57,12 +57,12 @@ def show_selenium_log(logpath):
 def run_selenium(logpath):
     name = str()
     with webdriver.Chrome(options=get_webdriver_options(), service=get_webdriver_service(logpath=logpath)) as driver:
-        url = "https://www.google.com.br/?hl=pt-BR"
+        url = "https://covid.saude.gov.br/"
         driver.get(url)
-        xpath = '//*[@class="ui-mainview-block eventpath-wrapper"]'
-        # Wait for the element to be rendered:
-        element = WebDriverWait(driver, 20).until(lambda x: x.find_elements(by=By.XPATH, value=xpath))
-        name = element[0].get_property('attributes')[0]['name']
+        caminho = './html/body/app-root/ion-app/ion-router-outlet/app-home/'
+        caminho += 'ion-content/div[1]/div[2]/ion-button'
+        file = driver.find_element('xpath', caminho)
+        file.click()
     return name
 
 
