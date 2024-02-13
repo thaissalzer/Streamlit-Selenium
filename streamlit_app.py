@@ -57,22 +57,62 @@ def show_selenium_log(logpath):
 def run_selenium(logpath):
     name = str()
     with webdriver.Chrome(options=get_webdriver_options(), service=get_webdriver_service(logpath=logpath)) as driver:
-        url = "https://covid.saude.gov.br/"
-        driver.get("https://covid.saude.gov.br/")
+        url = "https://participacao-social.ana.gov.br/"
+        driver.get("https://participacao-social.ana.gov.br/")
 
         # Aguarde 10 segundos para visualização
         time.sleep(10)
         
-        # Localize o elemento com xpath e digite no campo (.send_keys())
-        navegar = driver.find_element("xpath", 
-                                      '/html/body/app-root/ion-app/ion-router-outlet/app-home/ion-content/painel-geral-component/div/div[1]/div/div[1]/lista-sanfona-component/div[1]/div/ion-searchbar/div/input').send_keys("MG")
+        # Obtenha o código HTML da página carregada pelo Selenium
+        html = driver.page_source
         
-        # Aguarde 10 segundos para visualização
-        time.sleep(50)
+        # Parse o HTML com BeautifulSoup
+        soup = BeautifulSoup(html, 'html.parser')
         
-        # Feche o navegador
+        # Encontre a tabela com o id "tableContent"
+        table = soup.find('table', id='tableContent')
+        
+        # Inicialize listas vazias para armazenar os dados
+        numeros = []
+        meios_de_participacao = []
+        objetos = []
+        periodos_de_contribuicao = []
+        
+        # Encontre todas as linhas da tabela
+        rows = table.find_all('tr')
+        
+        # Itere sobre as linhas da tabela, excluindo o cabeçalho
+        for row in rows[1:]:
+            # Encontre as células da linha (colunas)
+            cells = row.find_all('td')
+        
+            # Extraia as informações de cada célula
+            numero = cells[0].text.strip()
+            meio_de_participacao = cells[1].text.strip()
+            objeto = cells[2].text.strip()
+            periodo_de_contribuicao = cells[3].text.strip()
+        
+            # Adicione os dados às listas
+            numeros.append(numero)
+            meios_de_participacao.append(meio_de_participacao)
+            objetos.append(objeto)
+            periodos_de_contribuicao.append(periodo_de_contribuicao)
+        
+        # Feche o driver do Selenium quando terminar
         driver.quit()
-    return name
+        
+        # Crie um DataFrame com os dados
+        data = {
+            "Número": numeros,
+            "Meio de Participação": meios_de_participacao,
+            "Objeto": objetos,
+            "Período de Contribuição": periodos_de_contribuicao
+        }
+        
+        df_ana = pd.DataFrame(data)
+        
+        # Exiba o DataFrame
+        st.dataframe(df_ana)
 
 
 if __name__ == "__main__":
