@@ -58,11 +58,20 @@ def run_selenium(logpath):
     name = str()
     with webdriver.Chrome(options=get_webdriver_options(), service=get_webdriver_service(logpath=logpath)) as driver:
         url = "https://covid.saude.gov.br/"
-        driver.get(url)
-        caminho = './html/body/app-root/ion-app/ion-router-outlet/app-home/'
-        caminho += 'ion-content/div[1]/div[2]/ion-button'
-        file = driver.find_element('xpath', caminho)
-        file.click()
+        driver.get("https://covid.saude.gov.br/")
+
+        # Aguarde 10 segundos para visualização
+        time.sleep(10)
+        
+        # Localize o elemento com xpath e digite no campo (.send_keys())
+        navegar = driver.find_element("xpath", 
+                                      '/html/body/app-root/ion-app/ion-router-outlet/app-home/ion-content/painel-geral-component/div/div[1]/div/div[1]/lista-sanfona-component/div[1]/div/ion-searchbar/div/input').send_keys("MG")
+        
+        # Aguarde 10 segundos para visualização
+        time.sleep(50)
+        
+        # Feche o navegador
+        driver.quit()
     return name
 
 
