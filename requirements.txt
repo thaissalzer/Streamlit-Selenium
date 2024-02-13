@@ -1,2 +1,9 @@
 streamlit
 selenium
+beautifulsoup4==4.12.3
+bs4==0.0.2
+by==0.0.4
+pandas==2.2.0
+plotly==5.18.0
+plotly-express==0.4.1
+requests==2.31.0
