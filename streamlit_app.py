@@ -57,13 +57,23 @@ def show_selenium_log(logpath):
 def run_selenium(logpath):
     name = str()
     with webdriver.Chrome(options=get_webdriver_options(), service=get_webdriver_service(logpath=logpath)) as driver:
-        url = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"
+        url = "https://antigo.aneel.gov.br/web/guest/consultas-publicas"
         driver.get(url)
-        xpath = '//*[@class="ui-mainview-block eventpath-wrapper"]'
-        # Wait for the element to be rendered:
-        element = WebDriverWait(driver, 10).until(lambda x: x.find_elements(by=By.XPATH, value=xpath))
-        name = element[0].get_property('attributes')[0]['name']
-    return name
+        
+        # Aguarde até que o conteúdo seja totalmente carregado (você pode ajustar o tempo de espera conforme necessário)
+        import time
+        time.sleep(5)  # Aguarda 5 segundos, você pode ajustar esse valor
+        
+        # Obtenha o conteúdo da página após o carregamento completo
+        page_source = driver.page_source
+        
+        # Feche o navegador
+        driver.quit()
+        
+        # Analise o conteúdo da página com BeautifulSoup
+        soup = BeautifulSoup(page_source, 'html.parser')
+
+    return soup
 
 
 if __name__ == "__main__":
