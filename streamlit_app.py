@@ -67,7 +67,6 @@ def run_selenium(logpath):
         # Obtenha o conteúdo da página após o carregamento completo
         page_source = driver.page_source
         
-        # Feche o navegador
         driver.quit()
         
         # Analise o conteúdo da página com BeautifulSoup
