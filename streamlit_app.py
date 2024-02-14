@@ -7,12 +7,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-import requests
-import pandas as pd
-from bs4 import BeautifulSoup
-import difflib
-
-
 
 
 @st.cache_resource(show_spinner=False)
@@ -63,62 +57,13 @@ def show_selenium_log(logpath):
 def run_selenium(logpath):
     name = str()
     with webdriver.Chrome(options=get_webdriver_options(), service=get_webdriver_service(logpath=logpath)) as driver:
-        url = "https://participacao-social.ana.gov.br/"
-        driver.get("https://participacao-social.ana.gov.br/")
-
-        # Aguarde 10 segundos para visualização
-        time.sleep(10)
-        
-        # Obtenha o código HTML da página carregada pelo Selenium
-        html = driver.page_source
-        
-        # Parse o HTML com BeautifulSoup
-        soup = BeautifulSoup(html, 'html.parser')
-        
-        # Encontre a tabela com o id "tableContent"
-        table = soup.find('table', id='tableContent')
-        
-        # Inicialize listas vazias para armazenar os dados
-        numeros = []
-        meios_de_participacao = []
-        objetos = []
-        periodos_de_contribuicao = []
-        
-        # Encontre todas as linhas da tabela
-        rows = table.find_all('tr')
-        
-        # Itere sobre as linhas da tabela, excluindo o cabeçalho
-        for row in rows[1:]:
-            # Encontre as células da linha (colunas)
-            cells = row.find_all('td')
-        
-            # Extraia as informações de cada célula
-            numero = cells[0].text.strip()
-            meio_de_participacao = cells[1].text.strip()
-            objeto = cells[2].text.strip()
-            periodo_de_contribuicao = cells[3].text.strip()
-        
-            # Adicione os dados às listas
-            numeros.append(numero)
-            meios_de_participacao.append(meio_de_participacao)
-            objetos.append(objeto)
-            periodos_de_contribuicao.append(periodo_de_contribuicao)
-        
-        # Feche o driver do Selenium quando terminar
-        driver.quit()
-        
-        # Crie um DataFrame com os dados
-        data = {
-            "Número": numeros,
-            "Meio de Participação": meios_de_participacao,
-            "Objeto": objetos,
-            "Período de Contribuição": periodos_de_contribuicao
-        }
-        
-        df_ana = pd.DataFrame(data)
-        
-        # Exiba o DataFrame
-        st.dataframe(df_ana)
+        url = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"
+        driver.get(url)
+        xpath = '//*[@class="ui-mainview-block eventpath-wrapper"]'
+        # Wait for the element to be rendered:
+        element = WebDriverWait(driver, 10).until(lambda x: x.find_elements(by=By.XPATH, value=xpath))
+        name = element[0].get_property('attributes')[0]['name']
+    return name
 
 
 if __name__ == "__main__":
