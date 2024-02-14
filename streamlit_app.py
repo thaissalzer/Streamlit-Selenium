@@ -72,38 +72,7 @@ def run_selenium(logpath):
         # Analise o conteúdo da página com BeautifulSoup
         soup = BeautifulSoup(page_source, 'html.parser')
         
-    return " "
-    consultas_publicas = soup.find_all('td', class_='table-cell only')
-    
-    # Itere pelas consultas públicas e extraia as informações desejadas
-    for consulta in consultas_publicas:
-        # Título da consulta
-        titulo_element = consulta.find('h5', class_='titulo-audiencia')
-        if titulo_element:
-            titulo = titulo_element.text.strip()
-        else:
-            titulo = "Título não encontrado"
-        
-        # Descrição da consulta
-        descricao_element = consulta.find('div', class_='row-fluid texto')
-        if descricao_element:
-            descricao = descricao_element.text.strip()
-        else:
-            descricao = "Descrição não encontrada"
-        
-        # Link da consulta
-        link_element = consulta.find('a', href=True)
-        if link_element:
-            link = link_element['href']
-        else:
-            link = "Link não encontrado"
-        
-        # Imprime as informações
-        st.write(f"Título: {titulo}")
-        st.write(f"Descrição: {descricao}")
-        st.write(f"Link: {link}")
-        st.write("="*30)
-        
+    return soup
 
 if __name__ == "__main__":
     logpath=get_logpath()
