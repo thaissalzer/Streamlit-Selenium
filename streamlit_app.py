@@ -34,8 +34,7 @@ def get_webdriver_options():
 
 def get_webdriver_service(logpath):
     service = Service(
-        executable_path=get_chromedriver_path(),
-        log_output=logpath,
+        executable_path=get_chromedriver_path()
     )
     return service
 
